@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AIMoodMate</title>
+    <meta name="description" content="Upload images and get instant mock AI predictions with confidence scores" />
+    <link rel="stylesheet" href="styles.css?v=20260118" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="container">
+        <div class="brand">
+          <div class="logo">ML</div>
+          <div>
+            <h1>AIMoodMate</h1>
+            <p class="muted">Powered by Neural Networks</p>
+          </div>
+        </div>
+        <div class="status">Model Active</div>
+      </div>
+    </header>
+
+    <main class="container main-grid">
+      <section class="left">
+        <div class="card upload-card" id="uploadCard">
+          <div class="card-header">
+            <h2>Upload Image</h2>
+            <button id="openCamera" class="btn small">Camera</button>
+          </div>
+
+          <div id="dropArea" class="drop-area">
+            <input id="fileInput" type="file" accept="image/*" hidden />
+            <div class="drop-content">
+              <div class="icon">⬆️</div>
+              <p class="lead">Drop your image here or click to browse</p>
+              <p class="muted">Supports: JPG, PNG, GIF (Max 10MB)</p>
+            </div>
+          </div>
+
+          <div id="previewWrap" class="preview hidden">
+            <img id="preview" src="" alt="Selected" />
+            <button id="resetBtn" class="btn ghost">Remove</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="right">
+        <div class="card">
+          <h2>Detected Emotion</h2>
+          <p id="predictedEmotion" class="muted" style="margin-bottom:8px;">No detection yet.</p>
+          <div id="predictions" class="predictions empty">Upload an image to detect your mood.</div>
+        </div>
+
+        <div class="card">
+          <h2>Related Spotify Tracks</h2>
+          <div id="spotify" class="spotify empty">No tracks yet.</div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Camera modal -->
+    <div id="cameraModal" class="modal hidden">
+      <div class="modal-content">
+        <button id="closeCamera" class="modal-close">✖</button>
+        <video id="video" autoplay playsinline></video>
+        <div id="cameraError" class="muted" style="margin-top:8px"></div>
+        <div class="modal-actions">
+          <button id="capture" class="btn">Capture</button>
+          <button id="usePhoto" class="btn primary hidden">Use Photo</button>
+        </div>
+        <canvas id="captureCanvas" hidden></canvas>
+      </div>
+    </div>
+
+    <script src="scripts.js?v=20260118"></script>
+  </body>
+</html>
