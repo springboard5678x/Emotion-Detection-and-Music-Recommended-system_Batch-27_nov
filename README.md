@@ -195,9 +195,7 @@ Gradual uplift algorithm:
 
 ---
 
-## 👨‍💻 Contributors
-- **Shreyas** – Lead Developer (Frontend, Backend Integration, Extension)
-- **Your Team Members** – (Optional)
+
 
 ---
 
