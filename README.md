@@ -205,7 +205,3 @@ Gradual uplift algorithm:
 Give the repository a **Star ⭐ on GitHub** to support the project!
 
 ---
-
-# Want a logo, banner, or animation section for README?
-Just tell me — I can generate a **professional header image, badges, diagrams, or UI showcase**.
-
