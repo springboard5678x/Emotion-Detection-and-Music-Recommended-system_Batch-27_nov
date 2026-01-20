@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoodMate AI | My Flow Library</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/shared.css">
+    <style>
+        .library-header {
+            text-align: center;
+            padding: 60px 40px 40px;
+        }
+
+        .library-header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 16px;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-bottom: 50px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .tab {
+            padding: 16px 32px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .tab.active {
+            color: var(--accent);
+            border-bottom: 3px solid var(--accent);
+        }
+
+        .content-section {
+            display: none;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            margin-bottom: 24px;
+        }
+
+        .create-playlist {
+            background: var(--accent);
+            color: #000;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            padding: 0 40px;
+        }
+
+        .playlist-card,
+        .item-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px;
+        }
+
+        .playlist-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .playlist-header h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+        }
+
+        .playlist-actions button {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .track-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .track-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px;
+            border-radius: 8px;
+            transition: background 0.3s ease;
+        }
+
+        .track-item:hover {
+            background: rgba(29, 185, 84, 0.1);
+        }
+
+        .track-art-small {
+            width: 50px;
+            height: 50px;
+            border-radius: 8px;
+            background-size: cover;
+        }
+
+        .track-info-small h4 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .track-info-small p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .empty {
+            text-align: center;
+            padding: 80px;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+        }
+
+        .back-btn {
+            text-align: center;
+            margin: 60px 0;
+        }
+
+        .add-to-playlist-btn {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-playlist-btn:hover {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .delete-btn {
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-right: 12px;
+            transition: all 0.3s ease;
+
+        }
+
+        .delete-btn:hover {
+            background: var(--accent);
+            color: #000;
+
+        }
+    </style>
+</head>
+
+<body>
+    <div class="library-container container">
+        <div class="library-header">
+            <h1>My Flow Library</h1>
+            <p>Playlists, saved tracks, and session history</p>
+        </div>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="playlists">Playlists</div>
+            <div class="tab" data-tab="tracks">Saved Tracks</div>
+            <div class="tab" data-tab="sessions">Past Sessions</div>
+        </div>
+
+        <!-- Playlists Tab -->
+        <div id="playlists" class="content-section active">
+            <div class="section-header">
+                <h2>Your Playlists</h2>
+                <button class="create-playlist" onclick="createPlaylist()">+ New Playlist</button>
+            </div>
+            <div class="grid" id="playlists-grid">
+                <div class="empty">No playlists yet. Create one!</div>
+            </div>
+        </div>
+
+        <!-- Saved Tracks Tab -->
+        <div id="tracks" class="content-section">
+            <div class="section-header">
+                <h2>Saved Tracks</h2>
+            </div>
+            <div class="grid" id="tracks-grid">
+
+            </div>
+        </div>
+
+        <!-- Sessions Tab -->
+        <div id="sessions" class="content-section">
+            <div class="section-header">
+                <h2>Past Sessions</h2>
+            </div>
+            <div class="grid" id="sessions-grid">
+                <div class="empty">No past sessions yet</div>
+            </div>
+        </div>
+
+        <div class="back-btn">
+            <a href="app2.html" class="btn-primary">← Back to Dashboard</a>
+        </div>
+    </div>
+
+    <script>
+        const TRACKS_KEY = 'moodmate_tracks';
+        const SESSIONS_KEY = 'moodmate_sessions';
+        const PLAYLISTS_KEY = 'moodmate_playlists';
+
+        // Tab switching
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.content-section').forEach(c => c.classList.remove('active'));
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Create new playlist
+        function createPlaylist() {
+            const name = prompt('Playlist name:');
+            if (name && name.trim()) {
+                const playlists = JSON.parse(localStorage.getItem(PLAYLISTS_KEY)) || [];
+                playlists.push({ name: name.trim(), tracks: [] });
+                localStorage.setItem(PLAYLISTS_KEY, JSON.stringify(playlists));
+                renderPlaylists();
+            }
+        }
+
+
+
+
+
+
+        // Render Playlists
+        function renderPlaylists() {
+            const playlists = JSON.parse(localStorage.getItem(PLAYLISTS_KEY)) || [];
+            const grid = document.getElementById('playlists-grid');
+            grid.innerHTML = playlists.length === 0
+                ? '<div class="empty">No playlists yet. Create one!</div>'
+                : playlists.map((p, i) => `
+                    <div class="playlist-card">
+                        <div class="playlist-header">
+                            <h3>${p.name} (${p.tracks.length} tracks)</h3>
+                            <div class="playlist-actions">
+                                <button onclick="playPlaylist(${i})" title="Play Playlist" style="font-size: 1.5rem;">▶️</button>
+                                <button onclick="deletePlaylist(${i})" title="Delete">🗑</button>
+                            </div>
+                        </div>
+                        <div class="track-list">
+                            ${p.tracks.length === 0 ? '<p style="color: var(--text-secondary);">Empty playlist</p>' :
+                        p.tracks.map(t => `
+                                <div class="track-item">
+                                    <div class="track-art-small" style="background-image: url('https://i.scdn.co/image/ab67616d0000b273${t.spotify_id.slice(-22)}')"></div>
+                                    <div class="track-info-small">
+                                        <h4>${t.title}</h4>
+                                        <p>Mood: ${t.mood}</p>
+                                    </div>
+                                </div>
+                              `).join('')}
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+
+        // function shufflePlaylist(index) {
+        //     const playlists = JSON.parse(localStorage.getItem(PLAYLISTS_KEY)) || [];
+        //     const playlist = playlists[index];
+
+        //     if (!playlist || playlist.tracks.length === 0) {
+        //         alert('Playlist is empty!');
+        //         return;
+        //     }
+
+        //     // 1. Shuffle the tracks
+        //     const shuffled = [...playlist.tracks].sort(() => Math.random() - 0.5);
+
+        //     // 2. Join the IDs (e.g., "id1,id2,id3")
+        //     const trackIds = shuffled.map(t => t.spotify_id).join(',');
+
+        //     // 3. CORRECT Spotify Trackset URL Format
+        //     const tracksetURL = `https://open.spotify.com/trackset/MoodMate-Mix/${trackIds}`;
+
+        //     // Open in a new tab
+        //     window.open(tracksetURL, '_blank');
+        // }
+
+        function playPlaylist(index) {
+            const playlists = JSON.parse(localStorage.getItem(PLAYLISTS_KEY)) || [];
+            const playlist = playlists[index];
+
+            if (!playlist || playlist.tracks.length === 0) {
+                alert('Playlist is empty!');
+                return;
+            }
+
+            // Save the tracks to a temporary queue in LocalStorage
+            localStorage.setItem('moodmate_queue', JSON.stringify(playlist.tracks));
+
+            // Redirect to the Dashboard
+            window.location.href = "app2.html";
+           
+        }
+
+        function deletePlaylist(index) {
+            if (confirm('Delete this playlist?')) {
+                let playlists = JSON.parse(localStorage.getItem(PLAYLISTS_KEY)) || [];
+                playlists.splice(index, 1);
+                localStorage.setItem(PLAYLISTS_KEY, JSON.stringify(playlists));
+                renderPlaylists();
+            }
+        }
+
+        // Add track to playlist (call from dashboard later)
+        window.addToPlaylist = function (track) {
+            const playlists = JSON.parse(localStorage.getItem(PLAYLISTS_KEY)) || [];
+            if (playlists.length === 0) {
+                alert('Create a playlist first!');
+                return;
+            }
+            const names = playlists.map(p => p.name).join('\n');
+            const choice = prompt(`Add to which playlist?\n\n${names}\n\nEnter name:`);
+            if (choice) {
+                const pl = playlists.find(p => p.name.toLowerCase() === choice.toLowerCase());
+                if (pl) {
+                    pl.tracks.push(track);
+                    localStorage.setItem(PLAYLISTS_KEY, JSON.stringify(playlists));
+                    alert('Added to playlist!');
+                } else {
+                    alert('Playlist not found');
+                }
+            }
+        };
+
+        // Render other tabs (tracks/sessions) — your existing code
+        // ... (keep your renderTracks, renderSessions, delete functions)
+
+        renderPlaylists();
+
+
+
+
+
+        function renderTracks() {
+            let tracks = JSON.parse(localStorage.getItem(TRACKS_KEY)) || [];
+            console.log('Loaded tracks from storage:', tracks); // Debug
+
+            const grid = document.getElementById('tracks-grid');
+            grid.innerHTML = tracks.length === 0
+                ? '<div class="empty">No saved tracks yet. Save one from the dashboard!</div>'
+                : tracks.map((t, i) => `
+                    <div class="item-card">
+                        <div class="item-art" style="background-image: url('https://i.scdn.co/image/ab67616d0000b273${t.spotify_id.slice(-22)}')"></div>
+                        <div class="item-info">
+                            <h3>${t.title}</h3>
+                            <p>Mood: ${t.mood}</p>
+                            <p>${t.saved_at}</p>
+                            <button class="add-to-playlist-btn" onclick="addTrackToPlaylist(${i})">Add to Playlist</button>
+                            <button class="delete-btn" onclick="deleteTrack(${i})">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+        }
+        function addTrackToPlaylist(trackIndex) {
+            const tracks = JSON.parse(localStorage.getItem(TRACKS_KEY)) || [];
+            const track = tracks[trackIndex];
+
+            const playlists = JSON.parse(localStorage.getItem(PLAYLISTS_KEY)) || [];
+            if (playlists.length === 0) {
+                alert('No playlists yet! Create one first.');
+                return;
+            }
+
+            const playlistNames = playlists.map(p => p.name).join('\n');
+            const choice = prompt(`Add "${track.title}" to which playlist?\n\n${playlistNames}\n\nType the playlist name:`);
+
+            if (choice) {
+                const playlist = playlists.find(p => p.name.toLowerCase() === choice.trim().toLowerCase());
+                if (playlist) {
+                    // Avoid duplicates in playlist
+                    if (!playlist.tracks.some(pt => pt.spotify_id === track.spotify_id)) {
+                        playlist.tracks.push(track);
+                        localStorage.setItem(PLAYLISTS_KEY, JSON.stringify(playlists));
+                        alert(`Added to "${playlist.name}"!`);
+                        renderPlaylists(); // Refresh playlists view
+                    } else {
+                        alert('Track already in this playlist!');
+                    }
+                } else {
+                    alert('Playlist not found. Check spelling.');
+                }
+            }
+        }
+
+        function deleteTrack(i) {
+            if (confirm('Delete this track?')) {
+                let tracks = JSON.parse(localStorage.getItem(TRACKS_KEY)) || [];
+                tracks.splice(i, 1);
+                localStorage.setItem(TRACKS_KEY, JSON.stringify(tracks));
+                renderTracks();
+            }
+        }
+
+        function renderSessions() {
+            let sessions = JSON.parse(localStorage.getItem(SESSIONS_KEY)) || [];
+            console.log('Loaded sessions from storage:', sessions); // Debug
+
+            sessions.sort((a, b) => new Date(b.date) - new Date(a.date)); // Newest first
+
+            const grid = document.getElementById('sessions-grid');
+            grid.innerHTML = sessions.length === 0
+                ? '<div class="empty">No past sessions yet. End a session to save it!</div>'
+                : sessions.map((s, i) => `
+                    <div class="item-card">
+                        <div class="item-info">
+                            <h3>${s.name || `Session #${sessions.length - i}`}</h3>
+                            <p>Date: ${s.date}</p>
+                            <p>Duration: ${s.duration}</p>
+                            <p>Mood: ${s.start_mood} → ${s.end_mood}</p>
+                            <p>Improvement: ${s.improvement}</p>
+                            <button class="delete-btn" onclick="deleteSession(${i})">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+        }
+
+        function deleteSession(i) {
+            if (confirm('Delete this session?')) {
+                let sessions = JSON.parse(localStorage.getItem(SESSIONS_KEY)) || [];
+                sessions.splice(i, 1);
+                localStorage.setItem(SESSIONS_KEY, JSON.stringify(sessions));
+                renderSessions();
+            }
+        }
+        renderTracks();
+        renderSessions();
+    </script>
+</body>
+
+</html>

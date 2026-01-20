@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "MoodMate Global Mini-Player",
+  "version": "1.0",
+  "description": "Floating mini-player for MoodMate AI across all tabs",
+  "permissions": ["storage"],
+  "host_permissions": [
+    "http://127.0.0.1:3000/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "css": ["styles.css"]
+    }
+  ],
+  "icons": {
+    "16": "music.png"
+
+  }
+}

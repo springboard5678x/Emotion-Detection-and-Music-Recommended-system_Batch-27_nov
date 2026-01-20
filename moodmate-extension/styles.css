@@ -1,0 +1,156 @@
+ /* #mini-player {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 360px;
+            height: 120px;
+            background: linear-gradient(135deg, #0a0a1a, #181830);
+            backdrop-filter: blur(20px);
+            border-radius: 20px;
+            border: 1px solid rgba(0, 255, 255, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 255, 255, 0.15);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.4s ease;
+            cursor: move;
+            overflow: hidden;
+        }
+
+        .mini-hidden {
+            transform: translateY(200px);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .mini-header {
+            padding: 8px 12px;
+            background: rgba(0, 255, 255, 0.05);
+            font-size: 0.85rem;
+            color: #00FFFF;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+        }
+
+        .mini-header button {
+            background: transparent;
+            border: none;
+            color: #00FFFF;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .mini-header button:hover {
+            color: #FFFFFF;
+        }
+
+        .mini-content {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            gap: 12px;
+            flex: 1;
+        }
+
+        .mini-artwork {
+            width: 70px;
+            height: 70px;
+            background: #282828;
+            border-radius: 12px;
+            background-size: cover;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .mini-info {
+            flex: 1;
+        }
+
+        #mini-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #FFFFFF;
+        }
+
+        #mini-mood {
+            font-size: 0.8rem;
+            color: #00FFFF;
+        }
+
+        .mini-controls {
+            display: flex;
+            gap: 10px;
+        }
+
+        .mini-controls button {
+            background: rgba(0, 255, 255, 0.1);
+            border: none;
+            color: #00FFFF;
+            font-size: 1.2rem;
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .mini-controls button:hover {
+            background: rgba(0, 255, 255, 0.3);
+        }
+
+        .mini-bot {
+            position: absolute;
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 255, 255, 0.15);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: #00FFFF;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            white-space: nowrap;
+        } */
+
+ /* styles.css - For extension UI polish */
+
+ /* Base overrides for injected elements */
+ #moodmate-mini {
+     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+ }
+
+ /* Header */
+ #moodmate-mini>div:first-child {
+     background: rgba(0, 0, 0, 0.5) !important;
+     backdrop-filter: blur(10px) !important;
+ }
+
+ /* Content */
+ #moodmate-mini>div:nth-child(2) {
+     background: transparent !important;
+ }
+
+ /* Artwork glow */
+ #mm-artwork {
+     box-shadow: 0 0 20px rgba(0, 255, 255, 0.3) !important;
+ }
+
+ /* IFrame style fix (Spotify) */
+ #mm-player-container iframe {
+     width: 100% !important;
+     height: 80px !important;
+     border-radius: 12px !important;
+     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5) !important;
+ }
+
+ /* Bot message glow */
+ #moodmate-mini>div:last-child {
+     box-shadow: 0 0 15px rgba(0, 255, 255, 0.4) !important;
+ }
+
+ /* Hover effects */
+ button:hover {
+     transform: scale(1.05) !important;
+     transition: transform 0.2s ease !important;
+ }

@@ -1,0 +1,14 @@
+names:
+- head
+- helmet
+- person
+nc: 3
+roboflow:
+  license: Public Domain
+  project: hard-hat-sample-jaczm
+  url: https://app.roboflow.com/anitaali/hard-hat-sample-jaczm/3
+  version: 3
+  workspace: anitaali
+test: ../test/images
+train: ../train/images
+val: ../valid/images

@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoodMate AI | Flow Studio</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Circular+Std:wght@400;500;700;900&display=swap"
+        rel="stylesheet">
+
+    <style>
+        @import url('css/shared.css');
+
+        /* ------------------------------------------- */
+        /* 🌿 GREEN THEME VARIABLES (Option A applied) */
+        /* ------------------------------------------- */
+        :root {
+            --bg-primary: #0D1117;
+            --bg-secondary: #161B22;
+
+            --text-primary: #E6EDF3;
+            --text-secondary: #8B949E;
+
+            --accent-cyan: #1DB954;
+            /* main green */
+            --accent-purple: #1ed760;
+            /* lighter green */
+
+            --mood-happy: #9BE6C3;
+            --mood-sad: #7FB7FF;
+            --mood-angry: #FF6B6B;
+            --mood-neutral: #D0D7DE;
+
+            --border: #30363D;
+        }
+
+        /* ------------------------------------------- */
+        /* GENERAL RESET & LAYOUT                     */
+        /* ------------------------------------------- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Circular Std', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            height: 100vh;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ------------------------------------------- */
+        /* TOP NAVBAR                                  */
+        /* ------------------------------------------- */
+        .top-nav {
+            height: 64px;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            z-index: 10;
+            border-bottom: 1px solid #282828;
+        }
+
+        .logo {
+            font-size: 1.6rem;
+            font-weight: 900;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-right {
+            margin-left: auto;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .mode-switch {
+            display: flex;
+            background: #282828;
+            border-radius: 30px;
+            padding: 4px;
+            gap: 4px;
+        }
+
+        .mode-btn {
+            padding: 10px 24px;
+            border-radius: 26px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .mode-btn.active {
+            background: #FFFFFF;
+            color: #000000;
+        }
+
+        #minimize-btn {
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-purple));
+            color: #000;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(29, 185, 84, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        #minimize-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(29, 185, 84, 0.4);
+        }
+
+        /* ------------------------------------------- */
+        /* MAIN CONTAINER                              */
+        /* ------------------------------------------- */
+        .main-container {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+
+        /* ------------------------------------------- */
+        /* SIDEBAR                                     */
+        /* ------------------------------------------- */
+        .sidebar {
+            width: 300px;
+            background: var(--bg-secondary);
+            padding: 24px;
+            overflow-y: auto;
+            border-right: 1px solid #282828;
+        }
+
+        .sidebar h3 {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            margin: 20px 0 10px;
+        }
+
+        .session-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .session-item:hover {
+            background: #282828;
+        }
+
+        .session-mood {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        /* ------------------------------------------- */
+        /* CENTER VIEW (WEBCAM)                        */
+        /* ------------------------------------------- */
+        .center-view {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            background: radial-gradient(circle at center, #0c1410, #000000);
+            padding-bottom: 120px;
+        }
+
+        .webcam-container {
+            position: relative;
+            max-width: 600px;
+            width: 90%;
+        }
+
+        #webcam {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+        }
+
+        /* ------------------------------------------- */
+        /* EMOTION LABEL (GREEN)                       */
+        /* ------------------------------------------- */
+        .emotion-overlay {
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 16px 40px;
+            border-radius: 50px;
+            font-size: 1.8rem;
+            font-weight: 900;
+
+            /* replaced */
+            border: 2px solid var(--accent-cyan);
+            box-shadow: 0 0 40px rgba(29, 185, 84, 0.35);
+        }
+
+        /* ------------------------------------------- */
+        /* FLOATING MOOD BOT (GREEN)                   */
+        /* ------------------------------------------- */
+        .mood-bot {
+            position: absolute;
+            bottom: 180px;
+            right: 40px;
+            display: flex;
+            align-items: end;
+            gap: 16px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        #bot-avatar {
+            width: 80px;
+
+            /* replaced glow */
+            filter: drop-shadow(0 0 20px var(--accent-cyan));
+        }
+
+        .bot-bubble {
+            background: rgba(20, 20, 40, 0.9);
+            padding: 16px 24px;
+            border-radius: 24px;
+            max-width: 260px;
+
+            /* replaced */
+            border: 1px solid rgba(29, 185, 84, 0.35);
+            font-size: 0.95rem;
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-10px);
+            }
+        }
+
+        /* ------------------------------------------- */
+        /* BOTTOM PLAYER                               */
+        /* ------------------------------------------- */
+        /* Bottom Player - Improved */
+        .now-playing-bar {
+            height: 95px;
+            background: rgba(16, 20, 24, 0.85);
+            backdrop-filter: blur(18px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            padding: 0 28px;
+            z-index: 10;
+        }
+
+        /* LEFT SIDE */
+        .np-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: 33%;
+        }
+
+        .np-artwork {
+            width: 64px;
+            height: 64px;
+            background-size: cover;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .np-info h4 {
+            font-size: 1.15rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+
+        .np-info p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* Save Track Button */
+        #save-track-btn {
+            background: transparent;
+            border: 1px solid var(--accent-cyan);
+            color: var(--accent-cyan);
+            padding: 8px 18px;
+            border-radius: 30px;
+            font-weight: 600;
+            transition: 0.25s ease;
+        }
+
+        #save-track-btn:hover {
+            background: var(--accent-cyan);
+            color: #000;
+        }
+
+        /* CENTER AREA */
+        .np-center {
+            width: 34%;
+            text-align: center;
+        }
+
+        .np-center p {
+            margin-top: 10px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        /* RIGHT AREA */
+        .np-right {
+            width: 33%;
+            text-align: right;
+        }
+
+        .end-session {
+            background: var(--accent-cyan);
+            color: #000;
+            padding: 10px 24px;
+            font-weight: 700;
+            border-radius: 40px;
+            transition: 0.25s ease;
+        }
+
+        .end-session:hover {
+            background: var(--accent-purple);
+        }
+
+        /* ------------------------------------------- */
+        /* MINI PLAYER — GREEN THEME                   */
+        /* ------------------------------------------- */
+        #inapp-mini {
+            position: fixed;
+            bottom: 28px;
+            right: 28px;
+            width: 420px;
+            height: 150px;
+
+            background: linear-gradient(135deg, rgba(10, 15, 20, 0.96), rgba(20, 25, 35, 0.92));
+            backdrop-filter: blur(24px);
+
+            border-radius: 28px;
+
+            /* replaced cyan → green */
+            border: 1px solid rgba(29, 185, 84, 0.35);
+            box-shadow: 0 20px 60px rgba(29, 185, 84, 0.20);
+        }
+
+        .inapp-mini-hidden {
+            transform: translateY(200px) scale(0.8);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .inapp-mini-header {
+            padding: 14px 24px;
+            background: rgba(29, 185, 84, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            border-bottom: 1px solid rgba(29, 185, 84, 0.2);
+        }
+
+        .inapp-mini-header span {
+            font-weight: 700;
+            font-size: 1.2rem;
+            color: var(--accent-cyan);
+        }
+
+        .inapp-mini-content {
+            display: flex;
+            padding: 20px 24px;
+            gap: 20px;
+            align-items: center;
+        }
+
+        #inapp-artwork {
+            width: 100px;
+            height: 100px;
+            border-radius: 18px;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
+        }
+
+        #inapp-mood-badge {
+            align-self: flex-start;
+            padding: 6px 16px;
+            background: rgba(29, 185, 84, 0.20);
+            border: 1px solid rgba(29, 185, 84, 0.4);
+            border-radius: 30px;
+            font-size: 0.95rem;
+            color: var(--accent-cyan);
+            font-weight: 600;
+        }
+
+        .inapp-progress-fill {
+            background: linear-gradient(90deg, #1DB954, #1ed760);
+        }
+
+        .inapp-bot-message {
+            position: absolute;
+            bottom: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(29, 185, 84, 0.2);
+            padding: 10px 24px;
+            border-radius: 30px;
+            font-size: 0.9rem;
+            color: var(--accent-cyan);
+            border: 1px solid rgba(29, 185, 84, 0.4);
+
+
+        }
+
+
+
+        #user-name-input {
+            width: 100%;
+            padding: 12px;
+            margin: 20px 0;
+            background: #282828;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            color: white;
+            text-align: center;
+        }
+
+        #add-to-playlist-btn {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-left: 10px;
+        }
+
+        .add-to-playlist-btn:hover {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
+            transform: scale(1.05);
+        }
+
+        .control-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s, transform 0.2s;
+        }
+
+        .control-btn:hover {
+            color: var(--accent-cyan);
+            transform: scale(1.2);
+        }
+    </style>
+</head>
+
+<body>
+
+
+    <!-- NAV -->
+    <div class="top-nav">
+        <a href="library.html" class="btn-primary" style="margin-left: 20px;">My Library</a>
+        <div class="logo">MoodMate AI</div>
+
+        <div class="nav-right">
+            <a href="download.html" title="Download Extension" style="text-decoration: none; font-size: 1.4rem; margin-right: 15px;">🧩</a>
+   
+            <div class="mode-switch">
+                <!-- <button id="minimize-btn">Get Back to Work</button> -->
+                <div class="mode-btn active" data-mode="match">Match Mood</div>
+                <div class="mode-btn" data-mode="improve">Boost Flow</div>
+                
+            </div>
+        </div>
+    </div>
+
+
+    <!-- MAIN -->
+    <div class="main-container">
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <h3>Your Flow History</h3>
+
+            <!-- Current Session (always on top) -->
+            <div class="current-session" style="
+        padding: 20px;
+        background: rgba(29,185,84,0.1);
+        border: 1px solid var(--accent);
+        border-radius: 16px;
+        margin-bottom: 32px;
+        text-align: center;
+    ">
+                <div style="font-size: 1.1rem; color: var(--text-secondary); margin-bottom: 8px;">
+                    Current Session
+                </div>
+                <div id="current-session-name" style="
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 12px;
+        ">
+                    Untitled Session
+                </div>
+                <button id="rename-session-btn" style="
+            background: transparent;
+            border: 1px solid var(--accent);
+            color: var(--accent);
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        ">
+                    Rename Session
+                </button>
+            </div>
+
+            <!-- Past Sessions -->
+            <div id="past-sessions-list">
+                <!-- Will be populated from LocalStorage -->
+            </div>
+        </div>
+
+        <!-- CENTER VIEW -->
+        <div class="center-view">
+            <div class="webcam-container">
+                <img id="webcam" src="http://127.0.0.1:8000/video_feed">
+                <div class="emotion-overlay" id="emotion-label">Detecting...</div>
+            </div>
+
+            <!-- MOOD BOT -->
+            <div class="mood-bot">
+                <svg id="bot-avatar" viewBox="0 0 200 200">
+                    <circle cx="100" cy="100" r="80" fill="#0F0F19" stroke="#1DB954" stroke-width="5" />
+                    <circle cx="70" cy="80" r="16" fill="#1DB954" />
+                    <circle cx="130" cy="80" r="16" fill="#1DB954" />
+                    <path id="bot-mouth" d="M70 120 Q100 150 130 120" stroke="#1DB954" stroke-width="6" fill="none" />
+                </svg>
+
+                <div class="bot-bubble" id="bot-bubble">Let me read your vibe...</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOTTOM PLAYER -->
+    <div class="now-playing-bar">
+        <div class="np-left">
+            <div class="np-artwork" id="np-artwork"></div>
+            <div class="np-info">
+                <h4 id="song-title">Waiting for mood...</h4>
+                <p id="song-vibe">Analyzing emotional state</p>
+            </div>
+            <div class="actions-group">
+                <button id="save-track-btn">Save</button>
+                <button id="add-to-playlist-btn" class="btn-secondary">Add to Playlist +</button>
+            </div>
+
+
+        </div>
+
+        <div class="np-center">
+            <div style="display: flex; justify-content: center; gap: 30px; margin-bottom: 8px;">
+                <button onclick="changeTrack('prev')" class="control-btn">⏮</button>
+                <button onclick="changeTrack('next')" class="control-btn">⏭</button>
+            </div>
+            <div id="spotify-player-container"></div>
+            <p>Mood shifting → <span id="mood-trend">Stable</span></p>
+        </div>
+
+        <div class="np-right">
+            <a href="#" class="end-session" onclick="saveAndGo(); return false;">
+                End Session →
+            </a>
+            <script>
+                async function saveAndGo() {
+                    await saveCurrentSession(); // Wait for the database to save
+                    window.location.href = "analytics.html"; // Then go to analytics
+                }
+            </script>
+        </div>
+    </div>
+
+    <!-- MINI PLAYER -->
+    <div id="inapp-mini" class="inapp-mini-hidden">
+        <div class="inapp-mini-header">
+            <span>MoodMate Flow</span>
+            <div>
+                <button id="inapp-maximize">Maximize</button>
+                <button id="inapp-close" style="color:#FF6B6B;">Close Tab</button>
+            </div>
+        </div>
+
+        <div class="inapp-mini-content">
+            <div id="inapp-artwork"></div>
+
+            <div class="inapp-info">
+                <div id="inapp-title">Detecting mood...</div>
+                <div id="inapp-mood-badge">Neutral</div>
+
+                <div class="inapp-progress">
+                    <div class="inapp-progress-fill"></div>
+                </div>
+            </div>
+
+            <div id="inapp-player-container">Loading...</div>
+        </div>
+
+        <div class="inapp-bot-message">I'm here while you code! 🤖</div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.mode-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+    </script>
+
+    <script src="js/app2.js"></script>
+</body>
+
+</html>

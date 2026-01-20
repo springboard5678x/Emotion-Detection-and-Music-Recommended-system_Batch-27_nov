@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoodMate AI | Session Analytics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.2/lottie.min.js"></script>
+    <style>
+        :root {
+            --bg: #0D1117;
+            --card-bg: #161B22;
+            --text: #E6EDF3;
+            --text-secondary: #8B949E;
+            --accent: #1DB954;
+            /* Spotify green */
+            --border: #30363D;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text);
+            margin-bottom: 12px;
+        }
+
+        .header p {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 50px;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 28px;
+            text-align: center;
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .chart-section {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 50px;
+        }
+
+        .chart-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--text);
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 400px;
+        }
+
+        .insights {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .insights h2 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        .insight-text {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            color: var(--text);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .actions {
+            text-align: center;
+            margin-top: 50px;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            padding: 16px 40px;
+            background: var(--accent);
+            color: #000;
+            font-weight: 700;
+            font-size: 1.1rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background: #1ed760;
+            transform: translateY(-3px);
+        }
+
+        .stat-card {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.6s forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Stagger the cards so they pop one by one */
+        .stat-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .stat-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .stat-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .stat-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div id="analytics-lottie" style="width: 200px; height: 200px; margin: 0 auto;"></div>
+            <h1>Session Wrapped</h1>
+            <p>Your productivity story for this session</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="duration">--:--</div>
+                <div class="stat-label">Duration</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="start-mood">--</div>
+                <div class="stat-label">Starting Mood</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="end-mood">--</div>
+                <div class="stat-label">Ending Mood</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="improvement">--</div>
+                <div class="stat-label">Mood Improvement</div>
+            </div>
+        </div>
+
+        <div class="chart-section">
+            <h2 class="chart-title">Emotional Journey</h2>
+            <div class="chart-wrapper">
+                <canvas id="moodChart"></canvas>
+            </div>
+        </div>
+
+        <div class="insights">
+            <h2>AI Insight</h2>
+            <p class="insight-text" id="insight-text">
+                Loading your personalized analysis...
+            </p>
+        </div>
+
+        <div class="actions">
+            <a href="app2.html" class="btn-primary">Start New Session</a>
+        </div>
+    </div>
+
+    <script>
+        const moodScoreMap = {
+            'Angry': 10, 'Disgust': 15, 'Fear': 20, 'Sad': 30,
+            'Neutral': 50, 'Surprise': 70, 'Happy': 90
+        };
+        lottie.loadAnimation({
+            container: document.getElementById('analytics-lottie'),
+            path: 'https://assets3.lottiefiles.com/packages/lf20_qp1q7mct.json', // Data/Graph themed
+            renderer: 'svg', loop: true, autoplay: true
+        });
+
+
+
+        async function loadAnalytics() {
+            // 1. Get user from storage (Fixes the "user is undefined" error)
+            const user = localStorage.getItem('moodmate_user_name') || 'Guest';
+
+            try {
+                // 2. Fetch session history (Using statsData as the variable)
+                const statsRes = await fetch(`http://127.0.0.1:8000/session_stats?username=${user}`);
+                const statsData = await statsRes.json();
+
+                // 3. Fetch the Peak Flow Insight (Alinged with backend name 'focus_peak')
+                const peakRes = await fetch(`http://127.0.0.1:8000/analytics/focus_peak?username=${user}`);
+                const peakData = await peakRes.json();
+
+                // 4. Update UI using statsData (Fixes the "data is undefined" error)
+                document.getElementById('duration').textContent = statsData.duration || '--:--';
+                document.getElementById('start-mood').textContent = statsData.start_mood || '--';
+                document.getElementById('end-mood').textContent = statsData.end_mood || '--';
+                document.getElementById('improvement').textContent = statsData.improvement || '--';
+
+                document.getElementById('insight-text').innerHTML = `
+            ${statsData.insight} <br><br>
+            <strong>🔍 Deep Work Analysis:</strong> Your data shows your peak flow state 
+            usually occurs around <strong>${peakData.peak_hour}:00</strong>. 
+            Schedule your hardest coding tasks then!
+        `;
+
+                // 5. Draw the Chart
+                const labels = statsData.history.map(entry => entry.time);
+                const scores = statsData.history.map(entry => moodScoreMap[entry.emotion] || 50);
+
+                const ctx = document.getElementById('moodChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Mood Level',
+                            data: scores,
+                            borderColor: '#1DB954',
+                            backgroundColor: 'rgba(29, 185, 84, 0.1)',
+                            borderWidth: 3,
+                            tension: 0.4,
+                            fill: true
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        scales: { y: { min: 0, max: 100 } }
+                    }
+                });
+
+            } catch (error) {
+                console.error("Analytics load error:", error);
+                document.getElementById('insight-text').textContent = "Connection to AI backend failed.";
+            }
+        }
+
+        loadAnalytics();
+    </script>
+</body>
+
+</html>

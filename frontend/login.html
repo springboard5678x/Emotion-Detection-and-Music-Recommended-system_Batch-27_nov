@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>MoodMate AI | Login</title>
+    <link href="https://fonts.googleapis.com/css2?family=Circular+Std:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #000;
+            color: white;
+            font-family: 'Circular Std', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .login-card {
+            background: #121212;
+            padding: 40px;
+            border-radius: 12px;
+            width: 400px;
+            text-align: center;
+            border: 1px solid #282828;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: 900;
+            color: #1DB954;
+            margin-bottom: 30px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            margin: 10px 0;
+            background: #282828;
+            border: 1px solid transparent;
+            border-radius: 4px;
+            color: white;
+            font-size: 1rem;
+        }
+
+        input:focus {
+            border-color: #1DB954;
+            outline: none;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 14px;
+            background: #1DB954;
+            color: black;
+            border: none;
+            border-radius: 30px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: 0.3s;
+        }
+
+        .btn-login:hover {
+            transform: scale(1.04);
+            background: #1ed760;
+        }
+
+        .footer-links {
+            margin-top: 20px;
+            color: #b3b3b3;
+            font-size: 0.9rem;
+        }
+
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="login-card">
+        <div class="logo">MoodMate AI</div>
+        <form id="login-form">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit" class="btn-login">LOG IN</button>
+        </form>
+        <div class="footer-links">
+            Don't have an account? <a href="#" id="toggle-auth">Sign up</a>
+        </div>
+    </div>
+
+    <script>
+
+        let isLogin = true;
+
+        document.getElementById('toggle-auth').onclick = (e) => {
+            e.preventDefault();
+            isLogin = !isLogin;
+            document.querySelector('.btn-login').textContent = isLogin ? 'LOG IN' : 'CREATE ACCOUNT';
+            document.getElementById('toggle-auth').textContent = isLogin ? 'Sign up' : 'Back to Login';
+        };
+        document.getElementById('login-form').onsubmit = async (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            // Choose endpoint based on current state
+            const endpoint = isLogin ? 'login' : 'register';
+
+            const response = await fetch(`http://127.0.0.1:8000/${endpoint}`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ username, password })
+            });
+
+            const result = await response.json();
+            if (result.status === "success") {
+                if (!isLogin) {
+                    alert("Account created! Please log in.");
+                    location.reload();
+                    return;
+                }
+                localStorage.setItem('moodmate_user_name', username);
+                window.location.href = "app2.html";
+            } else {
+                alert(result.message || "Invalid credentials.");
+            }
+        };
+    </script>
+</body>
+
+</html>

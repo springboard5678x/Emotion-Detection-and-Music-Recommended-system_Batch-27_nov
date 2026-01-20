@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoodMate AI | Spotify-Inspired Dev Flow Optimizer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.2/lottie.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #000000;
+            color: #FFFFFF;
+            overflow-x: hidden;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: rgba(0, 0, 0, 0.8);
+            position: fixed;
+            width: 100%;
+            z-index: 10;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1DB954;
+        }
+
+        .nav-links a {
+            color: #FFFFFF;
+            text-decoration: none;
+            margin-left: 20px;
+            font-size: 1rem;
+        }
+
+        .nav-links a:hover {
+            color: #1DB954;
+        }
+
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: left;
+            position: relative;
+            background: linear-gradient(to bottom, #121212, #000000);
+        }
+
+        .hero-content {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+        }
+
+        .hero-text h1 {
+            font-size: 4rem;
+            line-height: 1.2;
+            margin-bottom: 20px;
+        }
+
+        .hero-text h1 span {
+            color: #1DB954;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.8;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #1DB954;
+            color: #000000;
+            font-weight: 600;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            background: #1ED760;
+            transform: translateY(-3px);
+        }
+
+        .code-snippet {
+            background: #0d1117;
+            border: 1px solid #1db954;
+            padding: 20px;
+            border-radius: 12px;
+            color: #1db954;
+            font-family: "Source Code Pro", monospace;
+            box-shadow: 0 0 25px rgba(29, 185, 84, 0.2);
+            position: relative;
+            overflow: hidden;
+            margin-top: 20px;
+
+
+        }
+
+        /* Typing effect */
+        .typing-line {
+            width: 0;
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 2px solid #1db954;
+            animation: typing 2s steps(40) forwards var(--d), blinkCursor .7s infinite var(--d);
+            opacity: 0;
+        }
+
+        /* Reveal */
+        @keyframes typing {
+            0% {
+                width: 0;
+                opacity: 1;
+            }
+
+            100% {
+                width: 100%;
+                opacity: 1;
+            }
+        }
+
+        /* Cursor blinking */
+        @keyframes blinkCursor {
+            0% {
+                border-right-color: transparent;
+            }
+
+            50% {
+                border-right-color: #1db954;
+            }
+
+            100% {
+                border-right-color: transparent;
+            }
+        }
+
+
+        #lottie-hero {
+            width: 400px;
+            height: 400px;
+        }
+
+        .section {
+            padding: 100px 0;
+        }
+
+        .section h2 {
+            font-size: 2.5rem;
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-card {
+            background: #121212;
+            padding: 30px;
+            border-radius: 12px;
+            text-align: center;
+            transition: 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(29, 185, 84, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 2rem;
+            color: #1DB954;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 0;
+            background: #121212;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Animations */
+        .music-particle {
+            position: absolute;
+            font-size: 1.5rem;
+            opacity: 0.3;
+            animation: floatParticle 5s linear infinite;
+        }
+
+        @keyframes floatParticle {
+            0% {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            50% {
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: translateY(-100px);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">MoodMate AI</div>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#how-it-works">How It Works</a>
+                <a href="login.html" class="btn">Get Started</a>
+                <a href="download.html" class="nav-links">Extension</a>
+            </div>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="container hero-content">
+            <div class="hero-text">
+                <h1>Unlock Your <span>Dev Flow</span> with AI-Powered Music</h1>
+                <p>Real-time emotion detection meets Music recommendations. Match your mood or boost it—stay in the
+                    zone while coding.</p>
+                <a href="login.html" class="btn">Launch Dashboard</a>
+                <div class="code-snippet">
+                    <div class="typing-line" style="--d:0s">[01] Capturing micro-expressions...</div>
+                    <div class="typing-line" style="--d:1s">[02] Processing emotional confidence...</div>
+                    <div class="typing-line" style="--d:2s">[03] Building mood profile...</div>
+                    <div class="typing-line" style="--d:3s">[04] Syncing with music engine...</div>
+                    <div class="typing-line" style="--d:4s">[05] Delivering your perfect track </div>
+                </div>
+            </div>
+            <div id="lottie-hero"></div>
+        </div>
+        <!-- Particles -->
+        <!-- <div class="music-particle" style="left: 20%; top: 60%;">🎵</div>
+        <div class="music-particle" style="left: 30%; top: 70%; animation-delay: 1s;">🎶</div>
+        <div class="music-particle" style="left: 40%; top: 65%; animation-delay: 2s;">🎼</div>
+        <div class="music-particle" style="left: 50%; top: 75%; animation-delay: 3s;">🎵</div> -->
+    </section>
+
+    <section id="features" class="section" style="background: #121212;">
+        <div class="container">
+            <h2>Built for Developers</h2>
+            <div class="features">
+                <div class="feature-card">
+                    <div class="feature-icon">🔍</div>
+                    <h3>Emotion API</h3>
+                    <p>Integrate real-time face analysis into your workflow.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🎵</div>
+                    <h3>Dual Mode Recs</h3>
+                    <p>Match or improve your vibe with Spotify tracks.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Chrome Extension</h3>
+                    <p>Float Endlessly—keep coding without distraction.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🤖</div>
+                    <h3>Mood Bot</h3>
+                    <p>AI companion with tips and dynamic replies.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>Analytics Dashboard</h3>
+                    <p>Track mood shifts and productivity insights.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔗</div>
+                    <h3>Playlist Integration</h3>
+                    <p>Add tracks to your Spotify playlists seamlessly.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="how-it-works" class="section">
+        <div class="container">
+            <h2>How It Works</h2>
+            <div class="features">
+                <div class="feature-card">
+                    <h3>1. Detect</h3>
+                    <p>Webcam scans your emotion in real-time.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>2. Recommend</h3>
+                    <p>AI picks Spotify tracks based on mode.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>3. Flow</h3>
+                    <p>Minimize and code with ambient music.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section" style="background: linear-gradient(to bottom, #121212, #000000);">
+        <div class="container" style="text-align: center;">
+            <h2>Ready to Optimize Your Code Sessions?</h2>
+            <a href="app2.html" class="btn">Start Free</a>
+        </div>
+    </section>
+
+    <footer>
+        © 2026 MoodMate AI | Made by Shreyas for Developers
+    </footer>
+
+    <script>
+        // Lottie Animation
+        lottie.loadAnimation({
+            container: document.getElementById('lottie-hero'),
+            renderer: 'svg',
+            loop: true,
+            autoplay: true,
+            path: 'https://assets3.lottiefiles.com/packages/lf20_4k48f2wj.json' // Music-themed Lottie
+        });
+
+        // GSAP Scroll Animations
+        gsap.from('.hero-text', { y: 100, opacity: 0, duration: 1.5, ease: 'power3.out' });
+        gsap.from('#lottie-hero', { scale: 0.5, opacity: 0, duration: 1.5, delay: 0.5 });
+        gsap.utils.toArray('.feature-card').forEach((card, i) => {
+            gsap.from(card, {
+                scrollTrigger: card,
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                delay: i * 0.2
+            });
+        });
+
+        // Smooth Scroll for Nav
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+
+</html>
