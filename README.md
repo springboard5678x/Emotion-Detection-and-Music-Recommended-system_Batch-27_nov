@@ -108,21 +108,21 @@ This system automatically understands emotions and recommends suitable music wit
 
 ## 📂 Project Structure
 AIMoodMate/
-│
-├── app.py
-├── requirements.txt
-├── README.md
-│
-├── assets/
-├── ColabTraining/
-├── text_emotion_model/
-│
-├── image_emotion_model.h5
-├── class_map.json
-├── music_meta.csv
-├── music_features.npz
-│
-└── Presentation-AIMoodMate.pptx
+      │
+      ├── app.py
+      ├── requirements.txt
+      ├── README.md
+      │
+      ├── assets/
+      ├── ColabTraining/
+      ├── text_emotion_model/
+      │
+      ├── image_emotion_model.h5
+      ├── class_map.json
+      ├── music_meta.csv
+      ├── music_features.npz
+      │
+      └── Presentation-AIMoodMate.pptx
 ---
 ## 🧪 Datasets Used
 - Facial Emotion Dataset (FER-style)
