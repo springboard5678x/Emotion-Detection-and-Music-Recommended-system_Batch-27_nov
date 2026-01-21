@@ -1,8 +1,8 @@
 <div align="center">
 
-![GitHub repo size](https://img.shields.io/github/repo-size/RanitDERIA/moodmate?color=fb58b4)
-![GitHub stars](https://img.shields.io/github/stars/RanitDERIA/moodmate?style=social)
-![GitHub forks](https://img.shields.io/github/forks/RanitDERIA/moodmate?style=social)
+![GitHub repo size](https://img.shields.io/github/repo-size/RanitDERIA/moodmate?color=fb58b4&v=1)
+![GitHub stars](https://img.shields.io/github/stars/RanitDERIA/moodmate?style=social&v=1)
+![GitHub forks](https://img.shields.io/github/forks/RanitDERIA/moodmate?style=social&v=1)
 
 [![Twitter Follow](https://img.shields.io/twitter/follow/DeriaRanit?style=social)](https://twitter.com/intent/follow?screen_name=DeriaRanit)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn%20%40ranit--deria-blue?style=flat-square)](https://www.linkedin.com/in/ranit-deria-916864257/)
