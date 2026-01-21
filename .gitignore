@@ -1,0 +1,24 @@
+# Virtual environment
+env/
+env
+venv/
+.venv/
+
+# Model files
+*.h5
+*.pt
+*.pth
+*.ckpt
+rm
+# Datasets
+*.csv
+*.zip
+data/
+dataset/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Streamlit
+.streamlit/
