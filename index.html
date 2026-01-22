@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moodify</title>
+  <link rel="stylesheet" href="style.css" />
+  <!-- Font Awesome -->
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+/>
+
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">🎧 <span>Moodify</span></div>
+    <ul class="nav-links">
+      <li><a href="#home">Home</a></li>
+      <li><a href="#detect">Detect My Mood</a></li>
+      <li><a href="#text-emotion">TextEmotion</a></li>
+      <li><a href="#footer" class="spotify-btn">Footer</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO SECTION -->
+  <section class="hero-area">
+    <div class="hero-slider">
+
+      <div class="hero-slide active" style="background-image: url('./img/a7.avif');">
+        <div class="hero-content">
+          <h6 class="fade-up delay-1">Feel the moment</h6>
+          <h1 class="fade-up delay-2">
+            Music That Matches <span>Your Mood</span>
+          </h1>
+          <a href="#" class="fade-up delay-3 btn">Discover Music →</a>
+        </div>
+      </div>
+
+      <div class="hero-slide" style="background-image: url('./img/a7.avif');">
+        <div class="hero-content">
+          <h6 class="fade-up delay-1"><main>Music Reads You</main></h6>
+          <h1 class="fade-up delay-2">
+            Let Your Emotions <span>Choose the Sound</span>
+          </h1>
+          <a href="#" class="fade-up delay-3 btn">Detect My Mood →</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- HOME QUOTE SECTION -->
+  <section id="home" class="home-quote">
+    <div class="quote-wrapper">
+      <h1>“Your emotions deserve the right soundtrack.”</h1>
+      <p>Moodify understands how you feel — and plays music that matches.</p>
+    </div>
+  </section>
+
+ 
+
+<!-- ================= DETECT MY MOOD SECTION ================= -->
+<section id="detect" class="mood-section">
+
+  <h2 class="section-title">Feel It. Detect It. Play It 🎧</h2>
+  <p class="section-subtitle">
+    Your mood decides the music — no buttons, no effort
+  </p>
+
+  <div class="mood-actions">
+
+    <!-- Webcam Option -->
+    <div class="detect-box">
+      <h4>
+        <i class="fa-solid fa-camera"></i>
+        Live Camera
+      </h4>
+
+      <video id="webcam" autoplay playsinline hidden></video>
+      <canvas id="webcamCanvas" hidden></canvas>
+
+      <button id="startCamBtn">Start Camera</button>
+      <p class="hint">
+        Mood will be detected automatically
+      </p>
+    </div>
+
+    <!-- Upload Image Option -->
+    <div class="detect-box">
+      <h4>
+        <i class="fa-solid fa-image"></i>
+        Upload Image
+      </h4>
+
+      <label class="upload-btn">
+        Choose Image
+        <input type="file" id="imageInput" accept="image/*" hidden />
+      </label>
+
+      <p class="hint">
+        Uploaded image is not stored
+      </p>
+    </div>
+
+  </div>
+
+  <!-- Result Area -->
+  <div class="result-area">
+
+    <p class="emotion-text" id="emotionText"></p>
+
+    <p class="recommended-text">
+      Recommended Songs
+    </p>
+
+    <div class="songs-list" id="songsList"></div>
+
+  </div>
+
+</section>
+<!-- ================= END ================= -->
+
+
+
+<!-- ================= TEXT TO EMOTION SECTION ================= -->
+<section id="text-emotion" class="mood-section">
+  <h2 class="section-title">Feeling Words? Get Your Music 🎵</h2>
+  <p class="section-subtitle">
+    Type how you feel, and we'll recommend the perfect soundtrack
+  </p>
+
+  <div class="text-mood-actions">
+    <input
+      type="text"
+      id="textMoodInput"
+      placeholder="I'm feeling tired..."
+      autocomplete="off"
+    />
+    <button id="textMoodBtn">Find Songs</button>
+  </div>
+
+  <div class="result-area">
+    <p class="emotion-text" id="textEmotionText"></p>
+    <p class="recommended-text">Recommended For You</p>
+    <div class="songs-list" id="textSongsList"></div>
+  </div>
+</section>
+<!-- ================= END ================= -->
+
+  <!-- ================= INSPIRATIONAL QUOTE BEFORE FOOTER ================= -->
+<section class="final-quote">
+  <div class="quote-wrapper">
+    <h2>“Let the music speak your heart.”</h2>
+  </div>
+</section>
+
+<!-- ================= FOOTER ================= -->
+<footer class="footer">
+  <div class="footer-content">
+    <p>🎧 Moodify &copy; 2026</p>
+    <div class="footer-links">
+      <a href="#home">Home</a>
+      <a href="#detect">Detect My Mood</a>
+      <a href="#text-emotion">TextEmotion</a>
+      <a href="#footer">Footer</a>
+    </div>
+  </div>
+</footer>
+
+
+  <!-- SCRIPT -->
+  <script src="script.js"></script>
+</body>
+</html>
