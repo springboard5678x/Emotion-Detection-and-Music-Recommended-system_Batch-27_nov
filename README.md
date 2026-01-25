@@ -83,5 +83,7 @@ Music dataset curated manually for each emotion
 
 UI inspired by modern interactive web applications
 
+---
+
 License
  MIT License
