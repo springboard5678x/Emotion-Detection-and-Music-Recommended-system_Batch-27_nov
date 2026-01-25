@@ -76,6 +76,9 @@ Moodify is a web application that detects your current mood using facial express
 ---
  
 Credits
--Emotion detection model trained using Keras/TensorFlow 
--Music dataset curated manually for each emotion
--UI inspired by modern interactive web applications
+
+Emotion detection model trained using Keras/TensorFlow 
+
+Music dataset curated manually for each emotion
+
+UI inspired by modern interactive web applications
