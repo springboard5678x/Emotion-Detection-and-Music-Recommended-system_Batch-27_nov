@@ -30,7 +30,8 @@ window.addEventListener("scroll", () => {
 });
 
 // ==================== DETECT MY MOOD ====================
-const API_URL = "http://localhost:7860/predict_emotion";
+// Replace localhost with your Render backend URL
+const API_URL = "https://ai-3im8.onrender.com/predict_emotion";
 
 const video = document.getElementById("webcam");
 const canvas = document.getElementById("webcamCanvas");
@@ -134,7 +135,7 @@ const textMoodBtn = document.getElementById("textMoodBtn");
 const textEmotionText = document.getElementById("textEmotionText");
 const textSongsList = document.getElementById("textSongsList");
 
-const TEXT_API_URL = "http://localhost:7860/text_mood";
+const TEXT_API_URL = "https://ai-3im8.onrender.com/text_mood";
 
 textMoodBtn.addEventListener("click", () => {
   const text = textMoodInput.value.trim();
